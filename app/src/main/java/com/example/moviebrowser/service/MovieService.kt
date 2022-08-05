@@ -1,6 +1,6 @@
-package com.example.moviebrowser.Service
+package com.example.moviebrowser.service
 
-import com.example.moviebrowser.Model.MovieDTO
+import com.example.moviebrowser.model.MovieDTO
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

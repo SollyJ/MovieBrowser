@@ -6,11 +6,11 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviebrowser.Model.Movie
+import com.bumptech.glide.Glide
+import com.example.moviebrowser.model.Movie
 import com.example.moviebrowser.databinding.ItemMovieBinding
 
 class MovieAdapter(): ListAdapter<Movie, MovieAdapter.MovieItemViewHolder>(diffUtil) {
@@ -22,7 +22,11 @@ class MovieAdapter(): ListAdapter<Movie, MovieAdapter.MovieItemViewHolder>(diffU
             binding.releaseDateTextView.text = "출시: " + movie.releaseDate
             binding.ratingTextView.text = "평점: " + movie.rating
 
-            // todo Gilde 이미지 업로드
+            Glide
+                .with(binding.posterImageView.context)
+                .load(movie.imageUrl)
+                .into(binding.posterImageView)
+
             // todo 클릭이벤트
         }
     }

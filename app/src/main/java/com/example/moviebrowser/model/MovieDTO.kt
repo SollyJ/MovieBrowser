@@ -1,4 +1,4 @@
-package com.example.moviebrowser.Model
+package com.example.moviebrowser.model
 
 import com.google.gson.annotations.SerializedName
 

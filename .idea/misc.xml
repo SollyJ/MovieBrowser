@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/SollyJ/AndroidStudioProject/MovieBrowser/app/src/main/res/layout/activity_history.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SollyJ/AndroidStudioProject/MovieBrowser/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SollyJ/AndroidStudioProject/MovieBrowser/app/src/main/res/layout/activity_recentsearch.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SollyJ/AndroidStudioProject/MovieBrowser/app/src/main/res/layout/item_history.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/SollyJ/AndroidStudioProject/MovieBrowser/app/src/main/res/layout/item_movie.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/SollyJ/AndroidStudioProject/MovieBrowser/app/src/main/res/layout/item_movielist.xml" value="0.25364583333333335" />
       </map>
     </option>
