@@ -1,9 +1,12 @@
 package com.example.moviebrowser
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.moviebrowser.model.MovieDTO
@@ -21,12 +24,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var movieAdapter: MovieAdapter
     private lateinit var movieService: MovieService
     private lateinit var db: AppDataBase
+    private lateinit var queue: Queue<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         // 검색 기록을 저장하기 위한 room 생성
         db = AppDataBase.getInstance(applicationContext)!!
 
+        // 최근 검색 기록의 자료구조는 큐 형태로 구현
+        queue = LinkedList()
+
         // retrofit 생성
         val retrofit = Retrofit.Builder()
             .baseUrl("https://openapi.naver.com")
@@ -51,7 +59,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSearchButton() {
+        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager   // 키보드내리기
+
         binding.searchButton.setOnClickListener() {
+            imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+
             search(binding.searchEditText.text.toString())
         }
     }
@@ -77,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
                     // 성공처리
                     response.body()?.let {
-                        movieAdapter.submitList(it.movies)
+                        movieAdapter.submitList(it.movies)   // 검색 결과 보여주기
                     }
                 }
 
@@ -95,13 +107,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveHistory(query: String) {
-        Thread(Runnable {
-            db.historyDAO().insertHistory(History(null, query))
-        }).start()
+        if(queue.size >= 10) {
+            Thread ( Runnable {
+                db.historyDAO().insertHistory(History(null, query))
+                queue.add(query)
+                db.historyDAO().delete(queue.poll()!!)
+            }).start()
+        }
 
-        /*CoroutineScope(Dispatchers.IO).launch {
-            db.historyDAO().insertHistory(History(null, query))
-        }*/
+        else {
+            Thread ( Runnable {
+                db.historyDAO().insertHistory(History(null, query))
+                queue.add(query)
+            }).start()
+        }
     }
 
 }
