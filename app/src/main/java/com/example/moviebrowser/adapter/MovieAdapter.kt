@@ -13,7 +13,8 @@ import com.bumptech.glide.Glide
 import com.example.moviebrowser.model.Movie
 import com.example.moviebrowser.databinding.ItemMovieBinding
 
-class MovieAdapter(): ListAdapter<Movie, MovieAdapter.MovieItemViewHolder>(diffUtil) {
+class MovieAdapter(val clickListener: (Movie) -> Unit): ListAdapter<Movie, MovieAdapter.MovieItemViewHolder>(diffUtil) {
+
     inner class MovieItemViewHolder(private val binding: ItemMovieBinding): RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.N)
         @SuppressLint("SetTextI18n")
@@ -27,7 +28,9 @@ class MovieAdapter(): ListAdapter<Movie, MovieAdapter.MovieItemViewHolder>(diffU
                 .load(movie.imageUrl)
                 .into(binding.posterImageView)
 
-            // todo 클릭이벤트
+            binding.root.setOnClickListener {
+                clickListener(movie)
+            }
         }
     }
 

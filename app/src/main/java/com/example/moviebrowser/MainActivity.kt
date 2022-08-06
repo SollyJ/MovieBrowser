@@ -1,12 +1,18 @@
 package com.example.moviebrowser
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.content.getSystemService
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.moviebrowser.model.MovieDTO
@@ -87,8 +93,7 @@ class MainActivity : AppCompatActivity() {
                         return
                     }
 
-                    // 성공처리
-                    response.body()?.let {
+                    response.body()?.let {   // 성공처리
                         movieAdapter.submitList(it.movies)   // 검색 결과 보여주기
                     }
                 }
@@ -101,7 +106,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initMovieListRecyclerView() {
-        movieAdapter = MovieAdapter()
+        movieAdapter = MovieAdapter(clickListener = { movie ->
+            val intent = Intent(this, WebViewActivity::class.java)
+            intent.putExtra("url", movie.movieUrl)
+            startActivity(intent)   // 웹뷰 실행
+        })
         binding.movieListRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.movieListRecyclerView.adapter = movieAdapter
     }
@@ -112,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 db.historyDAO().insertHistory(History(null, query))
                 queue.add(query)
                 db.historyDAO().delete(queue.poll()!!)
+                Log.d("MainActivity", queue.peek().toString())
             }).start()
         }
 
@@ -119,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             Thread ( Runnable {
                 db.historyDAO().insertHistory(History(null, query))
                 queue.add(query)
+                Log.d("MainActivity", queue.peek().toString())
             }).start()
         }
     }
