@@ -1,4 +1,4 @@
-﻿
+
 # MovieBrowser
 
 > **주요 기능**
@@ -15,6 +15,7 @@ Room
 Retrofit  
 RecyclerView  
 WebView  
+ViewBinding  
 
 
   > **결과 화면**
@@ -23,4 +24,3 @@ WebView
 <img src = "https://github.com/SollyJ/MovieBrowser/blob/master/Screenshots/2.png?raw=true" width="300" height="500"/>
 <img src = "https://github.com/SollyJ/MovieBrowser/blob/master/Screenshots/3.png?raw=true" width="300" height="500"/>
 <img src = "https://github.com/SollyJ/MovieBrowser/blob/master/Screenshots/4.png?raw=true" width="300" height="500"/>
-
