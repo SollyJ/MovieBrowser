@@ -9,12 +9,14 @@ import com.example.moviebrowser.databinding.ItemHistoryBinding
 import com.example.moviebrowser.model.History
 import com.example.moviebrowser.model.Movie
 
-class HistoryAdapter(): ListAdapter<History, HistoryAdapter.HistoryItemViewHolder>(diffUtil) {
+class HistoryAdapter(val clickListener: (History) -> Unit): ListAdapter<History, HistoryAdapter.HistoryItemViewHolder>(diffUtil) {
     inner class HistoryItemViewHolder(private val binding: ItemHistoryBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(history: History) {
-            binding.recentQueryTextView.text = history.query
+            binding.recentQueryButton.text = history.query
 
-            // todo 클릭이벤트
+            binding.recentQueryButton.setOnClickListener {
+                clickListener(history)
+            }
         }
     }
 
